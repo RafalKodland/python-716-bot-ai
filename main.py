@@ -21,6 +21,7 @@ async def image(ctx):
     if len(ctx.message.attachments) > 0:
         for attachment in ctx.message.attachments:
             if attachment.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+                await ctx.typing()
                 file_path = f"./files/{attachment.filename}"
                 await attachment.save(file_path)
                 class_name, confidence = get_class(file_path)
