@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+from model import get_class
+from os import remove
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -19,8 +21,11 @@ async def image(ctx):
     if len(ctx.message.attachments) > 0:
         for attachment in ctx.message.attachments:
             if attachment.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-                await attachment.save(f"./files/{attachment.filename}")
-                await ctx.send(f'Zapisano obrazek: {attachment.filename}')
+                file_path = f"./files/{attachment.filename}"
+                await attachment.save(file_path)
+                class_name, confidence = get_class(file_path)
+                await ctx.send(f'Wykryto klasę: {class_name} z prawdopodobieństwem {confidence*100.0:.2f}%')
+                remove(file_path)
             else:
                 await ctx.send('Obrazek musi być w formacie PNG, JPG lub JPEG')
     else:

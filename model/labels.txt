@@ -1,0 +1,3 @@
+0 Gołąb
+1 Wróbel
+2 Kruk
